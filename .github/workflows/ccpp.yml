@@ -1,0 +1,27 @@
+name: UB-K CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: depends
+      run: |
+          sudo apt-get build-dep linux linux-image-$(uname -r)
+          sudo apt-get --quiet install --yes libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf
+          chmod a+x debian/rules
+          chmod a+x debian/scripts/*
+          chmod a+x debian/scripts/misc/*
+    - name: configure
+      run: fakeroot debian/rules clean
+    - name: make
+      run: fakeroot debian/rules binary-headers binary-generic binary-perarch
+
