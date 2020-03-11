@@ -15,6 +15,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: depends
       run: |
+        echo "deb-src http://archive.ubuntu.com/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list
+        echo "deb-src http://archive.ubuntu.com/ubuntu bionic-updates main" | sudo tee -a /etc/apt/sources.list
         sudo apt-get update
         sudo apt-get build-dep linux linux-image-$(uname -r)
         sudo apt-get --quiet install --yes libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf
