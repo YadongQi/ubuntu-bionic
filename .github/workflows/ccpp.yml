@@ -15,11 +15,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: depends
       run: |
-          sudo apt-get build-dep linux linux-image-$(uname -r)
-          sudo apt-get --quiet install --yes libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf
-          chmod a+x debian/rules
-          chmod a+x debian/scripts/*
-          chmod a+x debian/scripts/misc/*
+        sudo apt-get update
+        sudo apt-get build-dep linux linux-image-$(uname -r)
+        sudo apt-get --quiet install --yes libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf
+        chmod a+x debian/rules
+        chmod a+x debian/scripts/*
+        chmod a+x debian/scripts/misc/*
     - name: configure
       run: fakeroot debian/rules clean
     - name: make
