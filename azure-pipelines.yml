@@ -28,6 +28,6 @@ steps:
   
 - task: PublishBuildArtifacts@1
   displayName: Publish build artifacts
-    inputs:
-      pathtoPublish: ubut_build_debs
-      artifactName: ubut_build_debs
+  inputs:
+    pathtoPublish: ubut_build_debs
+    artifactName: ubut_build_debs
