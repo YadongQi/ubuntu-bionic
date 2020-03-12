@@ -1,0 +1,27 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo "deb-src http://archive.ubuntu.com/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list
+    echo "deb-src http://archive.ubuntu.com/ubuntu bionic-updates main" | sudo tee -a /etc/apt/sources.list
+    sudo apt-get update
+    sudo apt-get build-dep linux linux-image-$(uname -r)
+    sudo apt-get --quiet install --yes libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf
+    chmod a+x debian/rules
+    chmod a+x debian/scripts/*
+    chmod a+x debian/scripts/misc/*
+    fakeroot debian/rules clean
+    fakeroot debian/rules binary-headers binary-generic binary-perarch
+  displayName: 'Run a multi-line script'
